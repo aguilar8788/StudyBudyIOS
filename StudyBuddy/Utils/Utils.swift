@@ -51,7 +51,7 @@ class Utils {
         newWord.setValue(false, forKey: "learnedStatus")
         newWord.setValue(word, forKey: "notTranslated")
         newWord.setValue(translatedWord, forKey: "translated")
-        newWord.setValue("", forKey: "vocabDeck")
+        newWord.setValue("verbs", forKey: "vocabDeck")
         
         do {
             try context.save()

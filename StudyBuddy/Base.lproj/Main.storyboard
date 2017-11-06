@@ -5,6 +5,7 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -144,7 +145,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="jnI-He-KIC">
                         <barButtonItem key="leftBarButtonItem" title="Settings" id="uq8-s6-H6D"/>
-                        <barButtonItem key="rightBarButtonItem" title="Flash Cards" id="kGV-cs-b0b">
+                        <barButtonItem key="rightBarButtonItem" title="Words List" id="kGV-cs-b0b">
                             <connections>
                                 <segue destination="vGT-Jm-PDY" kind="show" id="fkk-S7-3Gp"/>
                             </connections>
@@ -184,13 +185,116 @@
                     <navigationItem key="navigationItem" id="We6-qw-AX0">
                         <rightBarButtonItems>
                             <barButtonItem title="Race the Clock" id="cib-nt-Jvs"/>
-                            <barButtonItem title="Study Cards" id="V0R-PA-42p"/>
+                            <barButtonItem title="Study Cards" id="V0R-PA-42p">
+                                <connections>
+                                    <action selector="studyCardsAction:" destination="vGT-Jm-PDY" id="law-gf-Ccy"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
+                    <connections>
+                        <segue destination="fPL-Du-FUU" kind="show" identifier="translatedWordSegue" id="iWh-Ro-zVK"/>
+                        <segue destination="pw3-C7-QuJ" kind="show" identifier="studySegue" id="pNo-TH-I1B"/>
+                        <segue destination="UPG-h4-hz3" kind="show" identifier="userDecksSegue" id="gqT-0Q-akX"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9wB-8v-OD0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2543" y="132"/>
+            <point key="canvasLocation" x="2546" y="-350"/>
+        </scene>
+        <!--User Decks Table View Controller-->
+        <scene sceneID="ObV-co-gmh">
+            <objects>
+                <tableViewController id="UPG-h4-hz3" customClass="UserDecksTableViewController" customModule="StudyBuddy" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="SkI-XO-wTk">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="deckCell" id="rbZ-FF-Xer">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rbZ-FF-Xer" id="lY3-zM-Rqb">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="UPG-h4-hz3" id="3mL-lb-gwW"/>
+                            <outlet property="delegate" destination="UPG-h4-hz3" id="AiP-h0-Po6"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <segue destination="pw3-C7-QuJ" kind="show" identifier="studyDeckSegue" id="VFi-ZA-eps"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tSB-rN-s4b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2545" y="-1263"/>
+        </scene>
+        <!--Study Words View Controller-->
+        <scene sceneID="MaW-im-dnC">
+            <objects>
+                <viewController id="pw3-C7-QuJ" customClass="StudyWordsViewController" customModule="StudyBuddy" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Iig-Ir-db9">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fJh-11-HdW">
+                                <rect key="frame" x="35" y="180.5" width="305" height="305"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="fJh-11-HdW" secondAttribute="height" multiplier="1:1" id="z9E-G1-v5J"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94681023316062174" green="0.94681023316062174" blue="0.94681023316062174" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="WPw-DV-r0r" firstAttribute="trailing" secondItem="fJh-11-HdW" secondAttribute="trailing" constant="35" id="22t-qy-tws"/>
+                            <constraint firstItem="fJh-11-HdW" firstAttribute="centerX" secondItem="Iig-Ir-db9" secondAttribute="centerX" id="6A7-8Q-MJM"/>
+                            <constraint firstItem="fJh-11-HdW" firstAttribute="leading" secondItem="WPw-DV-r0r" secondAttribute="leading" constant="35" id="sfT-w7-G1I"/>
+                            <constraint firstItem="fJh-11-HdW" firstAttribute="centerY" secondItem="Iig-Ir-db9" secondAttribute="centerY" id="xAf-PW-phX"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="WPw-DV-r0r"/>
+                    </view>
+                    <connections>
+                        <outlet property="flashCardOutlet" destination="fJh-11-HdW" id="Gzt-Ae-ImL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GKu-gI-2Hj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3801" y="-1263"/>
+        </scene>
+        <!--Word View Controller-->
+        <scene sceneID="5b0-HV-3zC">
+            <objects>
+                <viewController id="fPL-Du-FUU" customClass="WordViewController" customModule="StudyBuddy" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xcB-uv-C6c">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PWV-Jo-3y1">
+                                <rect key="frame" x="16" y="174" width="343" height="193"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="ebI-Ru-7aE"/>
+                    </view>
+                    <connections>
+                        <outlet property="translatedWordLabelOutlet" destination="PWV-Jo-3y1" id="jrO-EY-Ms8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C56-1q-uJ1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3348" y="-350"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="XEX-tr-a1K">
@@ -211,4 +315,7 @@
             <point key="canvasLocation" x="1026" y="132"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="VFi-ZA-eps"/>
+    </inferredMetricsTieBreakers>
 </document>

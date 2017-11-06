@@ -59,9 +59,11 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     override func viewDidAppear(_ animated: Bool) {
         let userReq = Utils.requestToDatabase(entityName: "User")
-        if let user = userReq[0].value(forKey: "firstName") {
-            print("first \(user)")
-            performSegue(withIdentifier: "showDashBoard", sender: nil)
+        if userReq.count > 0 {
+            if let user = userReq[0].value(forKey: "firstName") {
+                print("first \(user)")
+                performSegue(withIdentifier: "showDashBoard", sender: nil)
+            }
         }
         
 

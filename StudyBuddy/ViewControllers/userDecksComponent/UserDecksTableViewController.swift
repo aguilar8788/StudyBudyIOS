@@ -1,28 +1,31 @@
 //
-//  FlashCardsTableViewController.swift
+//  UserDecksTableViewController.swift
 //  StudyBuddy
 //
-//  Created by Peter Aguilar on 10/31/17.
+//  Created by Peter Aguilar on 11/6/17.
 //  Copyright © 2017 Aguilar Technology Solutions. All rights reserved.
 //
 
 import UIKit
 
-class FlashCardsTableViewController: UITableViewController {
-    var words = [String]()
-
+class UserDecksTableViewController: UITableViewController {
+    var userDecks = [String]()
+    var wordsInDeck = [FlashCardsTableViewController.wordsObject]()
+    var wordsWithNoDeck = [FlashCardsTableViewController.wordsObject]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-        let requestWords = Utils.requestToDatabase(entityName: "VocabWord")
-   
-        for word in requestWords {
-            if let word = word.value(forKey: "notTranslated") {
-                words.append(String(describing: word))
-            }
-        }
-       
+//        let requestWords = Utils.requestToDatabase(entityName: "VocabWord")
+//
+//        for word in requestWords {
+//            if let untranslatedWord = word.value(forKey: "notTranslated") {
+//                if let translatedWord = word.value(forKey: "translated") {
+//                    words.append(FlashCardsTableViewController.wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String))
+//                }
+//            }
+//        }
         
+//        print("userDecks \(userDecks)")
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -38,23 +41,54 @@ class FlashCardsTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return words.count
+        return userDecks.count
     }
 
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FlashCardCell", for: indexPath)
-        let word = words[indexPath.row]
- 
-        cell.textLabel?.text = word
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "deckCell", for: indexPath)
+        if userDecks.count > 0 {
+            cell.textLabel?.text = userDecks[indexPath.row]
+        }
+
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let requestWords = Utils.requestToDatabase(entityName: "VocabWord")
+        if requestWords.count > 0 {
+        wordsInDeck = [FlashCardsTableViewController.wordsObject]()
+        for word in requestWords {
+            if let untranslatedWord = word.value(forKey: "notTranslated") {
+                if let translatedWord = word.value(forKey: "translated") {
+                    if let deck = word.value(forKey: "vocabDeck") as? String {
+                        if userDecks[indexPath.row] == deck {
+                         wordsInDeck.append(FlashCardsTableViewController.wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String))
+                        } else {
+                            wordsWithNoDeck.append(FlashCardsTableViewController.wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String))
+                        }
+                    }
+                }
+            }
+        }
+        performSegue(withIdentifier: "studyDeckSegue", sender: nil)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let decksStudySegue = segue.destination as? StudyWordsViewController {
+            if wordsInDeck.count > 0 {
+                decksStudySegue.wordsToStudy = wordsInDeck
+            } else {
+                decksStudySegue.wordsToStudy = wordsWithNoDeck
+            }
+        }
+    }
+ 
 
     /*
     // Override to support conditional editing of the table view.

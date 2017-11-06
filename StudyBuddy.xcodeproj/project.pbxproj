@@ -7,17 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		100117311FACA94A0042BA5E /* WordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100117301FACA94A0042BA5E /* WordViewController.swift */; };
 		108B9E321FA4BC5E00D93D01 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108B9E311FA4BC5E00D93D01 /* AppDelegate.swift */; };
 		108B9E341FA4BC5E00D93D01 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108B9E331FA4BC5E00D93D01 /* ViewController.swift */; };
 		108B9E371FA4BC5E00D93D01 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 108B9E351FA4BC5E00D93D01 /* Main.storyboard */; };
-		108B9E3A1FA4BC5E00D93D01 /* StudyBuddy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 108B9E381FA4BC5E00D93D01 /* StudyBuddy.xcdatamodeld */; };
 		108B9E3C1FA4BC5E00D93D01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 108B9E3B1FA4BC5E00D93D01 /* Assets.xcassets */; };
 		108B9E3F1FA4BC5E00D93D01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 108B9E3D1FA4BC5E00D93D01 /* LaunchScreen.storyboard */; };
 		108B9E4A1FA4BC5E00D93D01 /* StudyBuddyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108B9E491FA4BC5E00D93D01 /* StudyBuddyTests.swift */; };
 		108B9E551FA4BC5E00D93D01 /* StudyBuddyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108B9E541FA4BC5E00D93D01 /* StudyBuddyUITests.swift */; };
 		108B9E631FA8BB9B00D93D01 /* DashBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108B9E621FA8BB9B00D93D01 /* DashBoardViewController.swift */; };
 		108B9E651FA8BBC600D93D01 /* FlashCardsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108B9E641FA8BBC600D93D01 /* FlashCardsTableViewController.swift */; };
-		108B9E691FA8BF7200D93D01 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108B9E681FA8BF7200D93D01 /* Utils.swift */; };
+		10A6867E1FB0AD0000DA0F4F /* UserDecksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A6867D1FB0AD0000DA0F4F /* UserDecksTableViewController.swift */; };
+		10E17FE21FACB88800B0B130 /* StudyBuddy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 10E17FE01FACB7DF00B0B130 /* StudyBuddy.xcdatamodeld */; };
+		10E17FE41FACB91100B0B130 /* StudyWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E17FE31FACB91100B0B130 /* StudyWordsViewController.swift */; };
+		10E17FE81FACE56200B0B130 /* UtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E17FE71FACE56200B0B130 /* UtilsTests.swift */; };
+		10E17FEA1FACEACF00B0B130 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108B9E681FA8BF7200D93D01 /* Utils.swift */; };
 		2E94BBD969CEF1C4275F74C6 /* Pods_StudyBuddyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A273D109B2F06E9AB3577AE /* Pods_StudyBuddyUITests.framework */; };
 		3D462954501F7331CFCF1307 /* Pods_StudyBuddyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4822B4A27E1CF8D4524685FB /* Pods_StudyBuddyTests.framework */; };
 		8711E51F9691B3F3F08187ED /* Pods_StudyBuddy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E57F440D75456AE1F79A1AA /* Pods_StudyBuddy.framework */; };
@@ -41,11 +45,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		100117301FACA94A0042BA5E /* WordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordViewController.swift; sourceTree = "<group>"; };
 		108B9E2E1FA4BC5E00D93D01 /* StudyBuddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StudyBuddy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		108B9E311FA4BC5E00D93D01 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		108B9E331FA4BC5E00D93D01 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		108B9E361FA4BC5E00D93D01 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		108B9E391FA4BC5E00D93D01 /* StudyBuddy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StudyBuddy.xcdatamodel; sourceTree = "<group>"; };
 		108B9E3B1FA4BC5E00D93D01 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		108B9E3E1FA4BC5E00D93D01 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		108B9E401FA4BC5E00D93D01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -58,6 +62,10 @@
 		108B9E621FA8BB9B00D93D01 /* DashBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashBoardViewController.swift; sourceTree = "<group>"; };
 		108B9E641FA8BBC600D93D01 /* FlashCardsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashCardsTableViewController.swift; sourceTree = "<group>"; };
 		108B9E681FA8BF7200D93D01 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		10A6867D1FB0AD0000DA0F4F /* UserDecksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDecksTableViewController.swift; sourceTree = "<group>"; };
+		10E17FE11FACB7DF00B0B130 /* StudyBuddy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StudyBuddy.xcdatamodel; sourceTree = "<group>"; };
+		10E17FE31FACB91100B0B130 /* StudyWordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyWordsViewController.swift; sourceTree = "<group>"; };
+		10E17FE71FACE56200B0B130 /* UtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilsTests.swift; sourceTree = "<group>"; };
 		152A7B1BFE3C9B8BB4342887 /* Pods-StudyBuddyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudyBuddyTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-StudyBuddyTests/Pods-StudyBuddyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2A273D109B2F06E9AB3577AE /* Pods_StudyBuddyUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StudyBuddyUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E57F440D75456AE1F79A1AA /* Pods_StudyBuddy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StudyBuddy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,15 +130,14 @@
 		108B9E301FA4BC5E00D93D01 /* StudyBuddy */ = {
 			isa = PBXGroup;
 			children = (
-				1093EC3C1FAA090000E8826C /* Components */,
 				108B9E671FA8BF5300D93D01 /* Utils */,
 				108B9E661FA8BBD500D93D01 /* ViewControllers */,
 				108B9E311FA4BC5E00D93D01 /* AppDelegate.swift */,
 				108B9E351FA4BC5E00D93D01 /* Main.storyboard */,
 				108B9E3B1FA4BC5E00D93D01 /* Assets.xcassets */,
 				108B9E3D1FA4BC5E00D93D01 /* LaunchScreen.storyboard */,
+				10E17FE01FACB7DF00B0B130 /* StudyBuddy.xcdatamodeld */,
 				108B9E401FA4BC5E00D93D01 /* Info.plist */,
-				108B9E381FA4BC5E00D93D01 /* StudyBuddy.xcdatamodeld */,
 			);
 			path = StudyBuddy;
 			sourceTree = "<group>";
@@ -140,6 +147,7 @@
 			children = (
 				108B9E491FA4BC5E00D93D01 /* StudyBuddyTests.swift */,
 				108B9E4B1FA4BC5E00D93D01 /* Info.plist */,
+				10E17FE71FACE56200B0B130 /* UtilsTests.swift */,
 			);
 			path = StudyBuddyTests;
 			sourceTree = "<group>";
@@ -156,9 +164,12 @@
 		108B9E661FA8BBD500D93D01 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				108B9E621FA8BB9B00D93D01 /* DashBoardViewController.swift */,
-				108B9E641FA8BBC600D93D01 /* FlashCardsTableViewController.swift */,
-				108B9E331FA4BC5E00D93D01 /* ViewController.swift */,
+				10A6867C1FB0ACE200DA0F4F /* userDecksComponent */,
+				10A6867B1FB0AB7F00DA0F4F /* signInComponent */,
+				10A6867A1FB0AB5C00DA0F4F /* StudyWordsComponent */,
+				10A686791FB0AB4700DA0F4F /* FlashCardTableComponent */,
+				10A686781FB0AB3600DA0F4F /* DashBoardComponent */,
+				10A686771FB0AB2800DA0F4F /* wordComponent */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -171,11 +182,52 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		1093EC3C1FAA090000E8826C /* Components */ = {
+		10A686771FB0AB2800DA0F4F /* wordComponent */ = {
 			isa = PBXGroup;
 			children = (
+				100117301FACA94A0042BA5E /* WordViewController.swift */,
 			);
-			path = Components;
+			path = wordComponent;
+			sourceTree = "<group>";
+		};
+		10A686781FB0AB3600DA0F4F /* DashBoardComponent */ = {
+			isa = PBXGroup;
+			children = (
+				108B9E621FA8BB9B00D93D01 /* DashBoardViewController.swift */,
+			);
+			path = DashBoardComponent;
+			sourceTree = "<group>";
+		};
+		10A686791FB0AB4700DA0F4F /* FlashCardTableComponent */ = {
+			isa = PBXGroup;
+			children = (
+				108B9E641FA8BBC600D93D01 /* FlashCardsTableViewController.swift */,
+			);
+			path = FlashCardTableComponent;
+			sourceTree = "<group>";
+		};
+		10A6867A1FB0AB5C00DA0F4F /* StudyWordsComponent */ = {
+			isa = PBXGroup;
+			children = (
+				10E17FE31FACB91100B0B130 /* StudyWordsViewController.swift */,
+			);
+			path = StudyWordsComponent;
+			sourceTree = "<group>";
+		};
+		10A6867B1FB0AB7F00DA0F4F /* signInComponent */ = {
+			isa = PBXGroup;
+			children = (
+				108B9E331FA4BC5E00D93D01 /* ViewController.swift */,
+			);
+			path = signInComponent;
+			sourceTree = "<group>";
+		};
+		10A6867C1FB0ACE200DA0F4F /* userDecksComponent */ = {
+			isa = PBXGroup;
+			children = (
+				10A6867D1FB0AD0000DA0F4F /* UserDecksTableViewController.swift */,
+			);
+			path = userDecksComponent;
 			sourceTree = "<group>";
 		};
 		6EE58512BE003D0D6B58B42A /* Pods */ = {
@@ -491,12 +543,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10E17FE41FACB91100B0B130 /* StudyWordsViewController.swift in Sources */,
 				108B9E341FA4BC5E00D93D01 /* ViewController.swift in Sources */,
 				108B9E651FA8BBC600D93D01 /* FlashCardsTableViewController.swift in Sources */,
+				100117311FACA94A0042BA5E /* WordViewController.swift in Sources */,
 				108B9E321FA4BC5E00D93D01 /* AppDelegate.swift in Sources */,
-				108B9E3A1FA4BC5E00D93D01 /* StudyBuddy.xcdatamodeld in Sources */,
 				108B9E631FA8BB9B00D93D01 /* DashBoardViewController.swift in Sources */,
-				108B9E691FA8BF7200D93D01 /* Utils.swift in Sources */,
+				10E17FE21FACB88800B0B130 /* StudyBuddy.xcdatamodeld in Sources */,
+				10E17FEA1FACEACF00B0B130 /* Utils.swift in Sources */,
+				10A6867E1FB0AD0000DA0F4F /* UserDecksTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +560,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				108B9E4A1FA4BC5E00D93D01 /* StudyBuddyTests.swift in Sources */,
+				10E17FE81FACE56200B0B130 /* UtilsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -798,12 +854,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		108B9E381FA4BC5E00D93D01 /* StudyBuddy.xcdatamodeld */ = {
+		10E17FE01FACB7DF00B0B130 /* StudyBuddy.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				108B9E391FA4BC5E00D93D01 /* StudyBuddy.xcdatamodel */,
+				10E17FE11FACB7DF00B0B130 /* StudyBuddy.xcdatamodel */,
 			);
-			currentVersion = 108B9E391FA4BC5E00D93D01 /* StudyBuddy.xcdatamodel */;
+			currentVersion = 10E17FE11FACB7DF00B0B130 /* StudyBuddy.xcdatamodel */;
 			path = StudyBuddy.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

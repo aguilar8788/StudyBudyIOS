@@ -66,7 +66,6 @@ class DashBoardViewController: UIViewController, XMLParserDelegate {
                     self.success = self.parser.parse()
                     if word != "" {
                         Utils.addWordToDataBase(word: word, translatedWord: self.stringBuilder,  context: context)
-                        print("string builder is \(self.stringBuilder)")
                         self.stringBuilder = ""
                     }
                 }
