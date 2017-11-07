@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "StudyBuddy/Utils/Utils.swift"
-            timestampString = "531680412.052568"
+            timestampString = "531756437.801414"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
             landmarkName = "addWordToDataBase(word:translatedWord:context:)"
             landmarkType = "7">
          </BreakpointContent>

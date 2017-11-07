@@ -20,7 +20,6 @@ class StudyWordsViewController: UIViewController {
         flashCardOutlet.addGestureRecognizer(gesture)
         
         flashCardOutlet.text = wordsToStudy[counter].translated as? String
-       
     }
 
     override func didReceiveMemoryWarning() {
@@ -48,6 +47,7 @@ class StudyWordsViewController: UIViewController {
                 if counter < wordsToStudy.count - 1 {
                     counter = counter + 1
                     flashCardOutlet.text = wordsToStudy[counter].translated as? String
+
                 }
             }
             if flashCardOutlet.center.x > (view.bounds.width / 2 + 100) {
@@ -59,6 +59,7 @@ class StudyWordsViewController: UIViewController {
             
             if flashCardOutlet.center.y < (view.bounds.height / 2 - 100) {
                 print("get outta here")
+                
             }
             
             rotation = CGAffineTransform(rotationAngle: 0)

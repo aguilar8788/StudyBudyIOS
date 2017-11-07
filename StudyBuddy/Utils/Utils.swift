@@ -41,17 +41,12 @@ class Utils {
     }
     
     static func addWordToDataBase(word: String, translatedWord: String, context: NSManagedObjectContext) {
-        //learnedStatus
-        //notTranslated
-        //translated
-        //vocabDeck
-        
         let newWord = NSEntityDescription.insertNewObject(forEntityName: "VocabWord", into: context)
         
         newWord.setValue(false, forKey: "learnedStatus")
         newWord.setValue(word, forKey: "notTranslated")
         newWord.setValue(translatedWord, forKey: "translated")
-        newWord.setValue("verbs", forKey: "vocabDeck")
+        newWord.setValue("", forKey: "vocabDeck")
         
         do {
             try context.save()
@@ -59,7 +54,6 @@ class Utils {
         } catch {
             print("error: word has not been saved")
         }
-        
     }
     
     static func requestToDatabase(entityName: String) -> [NSManagedObject] {
@@ -71,10 +65,8 @@ class Utils {
         
         do {
             let results = try context.fetch(req)
-           //maybe do not filter through here. Just send the whole object.
                 if results.count > 0 {
                     for result in results  as! [NSManagedObject]{
-                        print("jjjjj \(result)")
                         reqReturned.append(result)
                     }
                     
