@@ -30,11 +30,16 @@ class StudyWordsViewController: UIViewController {
         swipeRight.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(swipeRight)
         
+
+        
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
-                    moveBackInDeckOutlet.center.x -= view.bounds.width
+        self.view.sendSubview(toBack: self.moveBackInDeckOutlet)
+        self.moveBackInDeckOutlet.center.x -= self.view.bounds.width
+
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -49,8 +54,6 @@ class StudyWordsViewController: UIViewController {
     
     @objc
     func wasDragged(gestureRec: UIPanGestureRecognizer) {
-      
-     
         
         let labelPoint = gestureRec.translation(in: view)
         flashCardOutlet.center = CGPoint(x: view.bounds.width / 2 + labelPoint.x, y: view.bounds.height / 2 + labelPoint.y)
@@ -64,16 +67,24 @@ class StudyWordsViewController: UIViewController {
         
         // have to make the transition animation happen...
         if gestureRec.velocity(in: self.view).x > 0 {
-            print("right shit")
-            moveBackInDeckOutlet.center.x -= view.bounds.width
-            self.view.bringSubview(toFront: moveBackInDeckOutlet)
+        
+         
             rotation = CGAffineTransform(rotationAngle: 0)
             scaledAndRotated = rotation.scaledBy(x: 1, y: 1)
-            moveBackInDeckOutlet.transform = scaledAndRotated
-            moveBackInDeckOutlet.center = CGPoint(x: view.bounds.width / 2, y: view.bounds.height / 2)
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-                self.view.sendSubview(toBack: self.moveBackInDeckOutlet)
+            flashCardOutlet.transform = scaledAndRotated
+            flashCardOutlet.center = CGPoint(x: view.bounds.width / 2, y: view.bounds.height / 2)
+            self.view.bringSubview(toFront: moveBackInDeckOutlet)
+
+            UIView.animate(withDuration: 2.0) {
+                self.moveBackInDeckOutlet.center = CGPoint(x: self.view.bounds.width / 3, y: self.view.bounds.height / 2)
+
+                self.moveBackInDeckOutlet.center.x += self.view.bounds.width / 4
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                  self.moveBackInDeckOutlet.center.x -= self.view.bounds.width
+                self.view.sendSubview(toBack: self.moveBackInDeckOutlet)
+
             })
            
         }
