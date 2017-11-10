@@ -10,7 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "StudyBuddy/Utils/Utils.swift"
+<<<<<<< HEAD
             timestampString = "531756437.801414"
+=======
+            timestampString = "531787259.733047"
+>>>>>>> swipeAnimations
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "44"
