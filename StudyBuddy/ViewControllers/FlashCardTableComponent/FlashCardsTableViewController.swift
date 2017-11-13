@@ -10,11 +10,14 @@ import UIKit
 
 class FlashCardsTableViewController: UITableViewController {
     var words = [wordsObject]()
+    var wordsNotLearned = [wordsObject]()
+    var wordsLearned = [wordsObject]()
     var decks = [String]()
     
     struct wordsObject {
         var notTranslated: String
         var translated: String
+        var learnedStatus: Int
     }
     
     override func viewDidLoad() {
@@ -23,25 +26,34 @@ class FlashCardsTableViewController: UITableViewController {
         let requestWords = Utils.requestToDatabase(entityName: "VocabWord")
         
         for word in requestWords {
-            if let untranslatedWord = word.value(forKey: "notTranslated") {
-                if let translatedWord = word.value(forKey: "translated") {
-                    words.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String))
-                    
-                    if let deck = word.value(forKey: "vocabDeck") as? String {
-                        if !decks.contains(deck) {
-                            if !decks.contains("all words") {
-                                if deck == "" {
-                                    decks.append("all words")
+            if let learnedStatus = word.value(forKey: "learnedStatus") as? Int {
+                    if let untranslatedWord = word.value(forKey: "notTranslated") {
+                        if let translatedWord = word.value(forKey: "translated") {
+                            words.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus))
+                            if learnedStatus != 1 {
+                                wordsNotLearned.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus))
+                            } else if learnedStatus == 1 {
+                                wordsLearned.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus))
+                            }
+                            if let deck = word.value(forKey: "vocabDeck") as? String {
+                                if !decks.contains(deck) {
+                                    if !decks.contains("all words") {
+                                        if deck == "" {
+                                            decks.append("all words")
+                                        }
+                                    } else if deck != "" {
+                                        decks.append(deck)
+                                    }
                                 }
-                            } else if deck != "" {
-                                decks.append(deck)
                             }
                         }
                     }
-                }
             }
         }
         
+        if wordsLearned.count > 0 {
+            decks.append("learned")
+        }
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -104,13 +116,13 @@ class FlashCardsTableViewController: UITableViewController {
     @IBAction func studyCardsAction(_ sender: Any) {
         if decks.count > 0 {
             if decks.count == 1 && decks[0] == "all words" {
-                performSegue(withIdentifier: "studySegue", sender: words)
+                performSegue(withIdentifier: "studySegue", sender: wordsNotLearned)
             }else {
-            performSegue(withIdentifier: "userDecksSegue", sender: decks)
+                performSegue(withIdentifier: "userDecksSegue", sender: decks)
             }
         } else {
             if words.count > 0 {
-                performSegue(withIdentifier: "studySegue", sender: words)
+                performSegue(withIdentifier: "studySegue", sender: wordsNotLearned)
             } else {
                 //modal popup stating words have not been created yet
             }
@@ -152,14 +164,5 @@ class FlashCardsTableViewController: UITableViewController {
      }
      */
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }

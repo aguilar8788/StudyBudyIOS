@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -272,15 +272,23 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Woohoo you learned this deck!!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UBN-Qy-1l7">
+                                <rect key="frame" x="12" y="318" width="351.5" height="31.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.94681023316062174" green="0.94681023316062174" blue="0.94681023316062174" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="WPw-DV-r0r" firstAttribute="trailing" secondItem="fJh-11-HdW" secondAttribute="trailing" constant="35" id="22t-qy-tws"/>
                             <constraint firstItem="fJh-11-HdW" firstAttribute="centerX" secondItem="Iig-Ir-db9" secondAttribute="centerX" id="6A7-8Q-MJM"/>
+                            <constraint firstItem="UBN-Qy-1l7" firstAttribute="centerX" secondItem="Iig-Ir-db9" secondAttribute="centerX" id="IN9-jZ-jcs"/>
                             <constraint firstItem="cxD-bN-QvA" firstAttribute="leading" secondItem="WPw-DV-r0r" secondAttribute="leading" constant="35" id="LdO-v4-Sw1"/>
                             <constraint firstItem="WPw-DV-r0r" firstAttribute="trailing" secondItem="cxD-bN-QvA" secondAttribute="trailing" constant="35" id="N1U-4X-NKK"/>
                             <constraint firstItem="m1S-7e-fyv" firstAttribute="centerY" secondItem="Iig-Ir-db9" secondAttribute="centerY" id="Sic-H2-iWR"/>
                             <constraint firstItem="m1S-7e-fyv" firstAttribute="leading" secondItem="WPw-DV-r0r" secondAttribute="leading" constant="35" id="X0s-tF-3KE"/>
+                            <constraint firstItem="UBN-Qy-1l7" firstAttribute="centerY" secondItem="Iig-Ir-db9" secondAttribute="centerY" id="deF-Ca-FEx"/>
                             <constraint firstItem="cxD-bN-QvA" firstAttribute="centerX" secondItem="Iig-Ir-db9" secondAttribute="centerX" id="eA7-ZV-COR"/>
                             <constraint firstItem="cxD-bN-QvA" firstAttribute="centerY" secondItem="Iig-Ir-db9" secondAttribute="centerY" id="jOn-2q-OcM"/>
                             <constraint firstItem="WPw-DV-r0r" firstAttribute="trailing" secondItem="m1S-7e-fyv" secondAttribute="trailing" constant="35" id="mXT-r1-ptM"/>
@@ -291,6 +299,7 @@
                         <viewLayoutGuide key="safeArea" id="WPw-DV-r0r"/>
                     </view>
                     <connections>
+                        <outlet property="endOfDeckLabelOutlet" destination="UBN-Qy-1l7" id="RBN-MC-omW"/>
                         <outlet property="flashCardOutlet" destination="fJh-11-HdW" id="Gzt-Ae-ImL"/>
                         <outlet property="moveBackInDeckOutlet" destination="cxD-bN-QvA" id="iZD-Oe-y7V"/>
                         <outlet property="secondInDeckFlashCardOutlet" destination="m1S-7e-fyv" id="qJm-25-rhR"/>

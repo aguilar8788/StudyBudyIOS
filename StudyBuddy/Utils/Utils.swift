@@ -65,17 +65,52 @@ class Utils {
         
         do {
             let results = try context.fetch(req)
-                if results.count > 0 {
-                    for result in results  as! [NSManagedObject]{
-                        reqReturned.append(result)
-                    }
-                    
+            if results.count > 0 {
+                for result in results  as! [NSManagedObject]{
+                    reqReturned.append(result)
                 }
+                
+            }
             
         } catch {
             print("couldnt fetch")
         }
         
-      return reqReturned
+        return reqReturned
+    }
+    
+    static func makeChangeToDatabase(entityName: String, forKey: String, newValue: Int, predicate: String, predicateVal: String) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let req = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        req.returnsObjectsAsFaults = false
+        
+        req.predicate = NSPredicate(format: predicate + " = %@", predicateVal)
+        req.returnsObjectsAsFaults = false
+        
+        do {
+            let results = try context.fetch(req)
+            if results.count > 0 {
+                for result in results as! [NSManagedObject]{
+                    if let dbObject = result.value(forKey: predicate) as? String {
+                        if forKey == "learnedStatus" {
+                            result.setValue("learned", forKey: "vocabDeck")
+                        }
+                        result.setValue(newValue, forKey: forKey)
+                        do {
+                            print("should save")
+                            try context.save()
+                        } catch {
+                            print("didnt save")
+                        }
+                        print(dbObject)
+                    }
+                }
+            }else {
+                print("No results")
+            }
+        }catch {
+            print("counldnt fetch")
+        }
     }
 }
