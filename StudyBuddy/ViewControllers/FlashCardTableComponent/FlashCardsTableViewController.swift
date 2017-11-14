@@ -42,7 +42,9 @@ class FlashCardsTableViewController: UITableViewController {
                                             decks.append("all words")
                                         }
                                     } else if deck != "" {
-                                        decks.append(deck)
+                                        if !decks.contains(deck) {
+                                            decks.append(deck)
+                                        }
                                     }
                                 }
                             }
@@ -52,7 +54,9 @@ class FlashCardsTableViewController: UITableViewController {
         }
         
         if wordsLearned.count > 0 {
-            decks.append("learned")
+            if !decks.contains("learned") {
+                decks.append("learned")
+            }
         }
         
         // Uncomment the following line to preserve selection between presentations
