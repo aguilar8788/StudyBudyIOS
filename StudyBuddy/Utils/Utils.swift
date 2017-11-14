@@ -40,6 +40,7 @@ class Utils {
         }
     }
     
+    // refactor. SHit is horrible
     static func addWordToDataBase(word: String, translatedWord: String, context: NSManagedObjectContext) {
         let newWord = NSEntityDescription.insertNewObject(forEntityName: "VocabWord", into: context)
         
@@ -56,15 +57,31 @@ class Utils {
         }
     }
     
-    static func requestToDatabase(entityName: String) -> [NSManagedObject] {
+    struct dataBaseFetchObj {
+        var results: NSFetchRequest<NSFetchRequestResult>
+        var predicate: String
+        var predicateVal: String
+    }
+    
+    static func fetchDatabaseItems(entityName: String, predicate: String = "", predicateVal: String = "") -> dataBaseFetchObj {
+        let req = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        req.returnsObjectsAsFaults = false
+        if predicate != "" && predicateVal != "" {
+             req.predicate = NSPredicate(format: predicate + " = %@", predicateVal)
+        }
+       
+        return dataBaseFetchObj.init(results: req, predicate: predicate, predicateVal: predicateVal)
+    }
+    
+    static func returnDBFetchedObjects(entityName: String) -> [NSManagedObject] {
         var reqReturned = [NSManagedObject]()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
-        let req = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        req.returnsObjectsAsFaults = false
+        
+        let objectFetched = self.fetchDatabaseItems(entityName: entityName)
         
         do {
-            let results = try context.fetch(req)
+            let results = try context.fetch(objectFetched.results)
             if results.count > 0 {
                 for result in results  as! [NSManagedObject]{
                     reqReturned.append(result)
@@ -79,31 +96,29 @@ class Utils {
         return reqReturned
     }
     
-    static func makeChangeToDatabase(entityName: String, forKey: String, newValue: Int, predicate: String, predicateVal: String) {
+    
+    
+    static func makeChangeToDatabase(requestFromDB:dataBaseFetchObj, filterForKey: String, newValue: String) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
-        let req = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        req.returnsObjectsAsFaults = false
-        
-        req.predicate = NSPredicate(format: predicate + " = %@", predicateVal)
-        req.returnsObjectsAsFaults = false
-        
+
         do {
-            let results = try context.fetch(req)
+            let results = try context.fetch(requestFromDB.results)
             if results.count > 0 {
                 for result in results as! [NSManagedObject]{
-                    if let dbObject = result.value(forKey: predicate) as? String {
-                        if forKey == "learnedStatus" {
+                    if (result.value(forKey: requestFromDB.predicate) as? String) != nil {
+                        if filterForKey == "learnedStatus" {
                             result.setValue("learned", forKey: "vocabDeck")
+                            result.setValue(1, forKey: "learnedStatus")
+                        } else {
+                            result.setValue(newValue, forKey: filterForKey)
                         }
-                        result.setValue(newValue, forKey: forKey)
                         do {
                             print("should save")
                             try context.save()
                         } catch {
                             print("didnt save")
                         }
-                        print(dbObject)
                     }
                 }
             }else {
@@ -112,5 +127,45 @@ class Utils {
         }catch {
             print("counldnt fetch")
         }
+        
     }
+
+    
+    
+//    static func makeChangeToDatabase(entityName: String, forKey: String, newValue: Int, predicate: String, predicateVal: String) {
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        let context = appDelegate.persistentContainer.viewContext
+////        let req = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+////        req.returnsObjectsAsFaults = false
+////
+////        req.predicate = NSPredicate(format: predicate + " = %@", predicateVal)
+////        req.returnsObjectsAsFaults = false
+//
+//
+//
+//        do {
+//            let results = try context.fetch(req)
+//            if results.count > 0 {
+//                for result in results as! [NSManagedObject]{
+//                    if let dbObject = result.value(forKey: predicate) as? String {
+//                        if forKey == "learnedStatus" {
+//                            result.setValue("learned", forKey: "vocabDeck")
+//                        }
+//                        result.setValue(newValue, forKey: forKey)
+//                        do {
+//                            print("should save")
+//                            try context.save()
+//                        } catch {
+//                            print("didnt save")
+//                        }
+//                        print(dbObject)
+//                    }
+//                }
+//            }else {
+//                print("No results")
+//            }
+//        }catch {
+//            print("counldnt fetch")
+//        }
+//    }
 }

@@ -23,7 +23,7 @@ class FlashCardsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let requestWords = Utils.requestToDatabase(entityName: "VocabWord")
+        let requestWords = Utils.returnDBFetchedObjects(entityName: "VocabWord")
         
         for word in requestWords {
             if let learnedStatus = word.value(forKey: "learnedStatus") as? Int {

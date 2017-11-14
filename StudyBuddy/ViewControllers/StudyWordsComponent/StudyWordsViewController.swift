@@ -53,7 +53,14 @@ class StudyWordsViewController: UIViewController {
     func doubleTapped() {
         if wordsToStudy.count - 1 > 0 {
             wordsLearned.append(wordsToStudy[counter])
-            Utils.makeChangeToDatabase(entityName: "VocabWord", forKey: "learnedStatus", newValue: 1, predicate: "translated", predicateVal: wordsToStudy[counter].translated)
+//            Utils.makeChangeToDatabase(entityName: "VocabWord", forKey: "learnedStatus", newValue: 1, predicate: "translated", predicateVal: wordsToStudy[counter].translated)
+//
+            
+            let databaseFetch = Utils.fetchDatabaseItems(entityName: "VocabWord", predicate: "translated", predicateVal: wordsToStudy[counter].translated)
+            
+            Utils.makeChangeToDatabase(requestFromDB: databaseFetch, filterForKey: "learnedStatus", newValue: "1")
+            
+            
             wordsToStudy.remove(at: counter)
             UIView.animate(withDuration: 1.0) {
                 self.flashCardOutlet.center.y -= self.view.bounds.width * 2

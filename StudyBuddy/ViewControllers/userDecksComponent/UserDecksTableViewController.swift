@@ -60,7 +60,7 @@ class UserDecksTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let requestWords = Utils.requestToDatabase(entityName: "VocabWord")
+        let requestWords = Utils.returnDBFetchedObjects(entityName: "VocabWord")
         if requestWords.count > 0 {
             wordsInDeck = [FlashCardsTableViewController.wordsObject]()
             wordsWithNoDeck.removeAll()
