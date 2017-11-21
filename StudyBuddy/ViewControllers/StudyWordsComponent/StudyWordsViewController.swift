@@ -22,6 +22,7 @@ class StudyWordsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         endOfDeckLabelOutlet.isHidden = true
         
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(wasDragged(gestureRec:)))
@@ -49,41 +50,56 @@ class StudyWordsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //must be refactored before production
     @objc
     func doubleTapped() {
         if wordsToStudy.count - 1 > 0 {
             wordsLearned.append(wordsToStudy[counter])
-//            Utils.makeChangeToDatabase(entityName: "VocabWord", forKey: "learnedStatus", newValue: 1, predicate: "translated", predicateVal: wordsToStudy[counter].translated)
-//
             
             let databaseFetch = Utils.fetchDatabaseItems(entityName: "VocabWord", predicate: "translated", predicateVal: wordsToStudy[counter].translated)
             
             Utils.makeChangeToDatabase(requestFromDB: databaseFetch, filterForKey: "learnedStatus", newValue: "1")
-            
-            
             wordsToStudy.remove(at: counter)
+            
+            if wordsToStudy.count - 1 != 0 && counter > 0 {
+                counter = counter - 1
+            }
+            
             UIView.animate(withDuration: 1.0) {
                 self.flashCardOutlet.center.y -= self.view.bounds.width * 2
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
                 self.flashCardOutlet.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)
                 if self.wordsToStudy.count > 1 {
-                    if self.counter < self.wordsToStudy.count - 1 {
-                        if (self.counter + 1) != self.wordsToStudy.count {
-                            self.secondInDeckFlashCardOutlet.text = self.wordsToStudy[self.counter + 1].translated
-                        }
+                    if (self.counter) == self.wordsToStudy.count {
+                        self.flashCardOutlet.text = self.wordsToStudy[self.counter - 1].translated
+                        self.secondInDeckFlashCardOutlet.isHidden = true
+                    } else {
                         self.flashCardOutlet.text = self.wordsToStudy[self.counter].translated
                     }
                 } else {
-                    self.secondInDeckFlashCardOutlet.text = self.wordsToStudy[self.counter].translated
-                    self.flashCardOutlet.text = self.wordsToStudy[self.counter].translated
+                    if (self.counter) == self.wordsToStudy.count {
+                        self.secondInDeckFlashCardOutlet.isHidden = true
+                        self.flashCardOutlet.text = self.wordsToStudy[self.counter - 1].translated
+                    } else {
+                        self.secondInDeckFlashCardOutlet.text = self.wordsToStudy[self.counter].translated
+                        self.flashCardOutlet.text = self.wordsToStudy[self.counter].translated
+                    }
                 }
             })
+            
+            let learnedModal = Utils.modalPopUp(title: "card learned", message: "moving to learned deck", duration: 1)
+            self.present(learnedModal, animated: true, completion: nil)
         } else {
             flashCardOutlet.isHidden = true
             secondInDeckFlashCardOutlet.isHidden = true
             moveBackInDeckOutlet.isHidden = true
-            endOfDeckLabelOutlet.isHidden = false
+            let finishedModal = Utils.modalPopUp(title: "Woohoo!!", message: "You learned this deck!", duration: 2)
+            self.present(finishedModal, animated: true, completion: nil)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
     
@@ -112,9 +128,9 @@ class StudyWordsViewController: UIViewController {
                 
                 self.view.bringSubview(toFront: moveBackInDeckOutlet)
                 
-                UIView.animate(withDuration: 1.0) {
+                UIView.animate(withDuration: 0.2) {
                     self.moveBackInDeckOutlet.text = self.wordsToStudy[self.counterBehindOne].translated
-                    self.moveBackInDeckOutlet.center = CGPoint(x: self.view.bounds.width / 3, y: self.view.bounds.height / 2)
+                    self.moveBackInDeckOutlet.center = CGPoint(x: self.view.bounds.width / 4, y: self.view.bounds.height / 2)
                     self.moveBackInDeckOutlet.center.x += self.view.bounds.width / 4
                 }
                 

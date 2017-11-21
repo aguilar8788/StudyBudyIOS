@@ -31,9 +31,14 @@ class DashBoardViewController: UIViewController, XMLParserDelegate {
     
     @IBAction func addWordAction(_ sender: Any) {
         if wordToAddTextOutlet.text != "" {
-            translateWord(word: wordToAddTextOutlet.text!)
+            identifyLanguage(word: wordToAddTextOutlet.text!)
+            //************ this needs to be changed to only notify if the add was actually successful ******************
+            let addedCardSuccessModal = Utils.modalPopUp(title: "Success", message: "Card Added", duration: 1)
+            self.present(addedCardSuccessModal, animated: true, completion: nil)
+            wordToAddTextOutlet.text = ""
         }
     }
+
     
     /*
      // MARK: - Navigation
@@ -45,11 +50,43 @@ class DashBoardViewController: UIViewController, XMLParserDelegate {
      }
      */
     
-    func translateWord(word: String) {
+    //*********************** refactor to make dry ***************************
+    func identifyLanguage(word: String) {
+        let apiPath = "https://api.microsofttranslator.com/v2/Http.svc/Detect?text=\(word)"
+        let encodeString = apiPath.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+        let url = URL(string: encodeString!)
+        
+        var request = URLRequest(url: url!)
+        request.setValue("ea1eedd1bf3844f59607d292a1de43b7", forHTTPHeaderField: "Ocp-Apim-Subscription-Key")
+        
+        let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+            if error != nil {
+                print(error as Any)
+            } else {
+                if let urlContent = data {
+                    self.parser = XMLParser(data: urlContent)
+                    self.parser.delegate = self
+                    self.success = self.parser.parse()
+                    if word != "" {
+                        self.translateWord(word: word, language: self.stringBuilder)
+                    }
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    func translateWord(word: String, language: String) {
+        print(word)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
+        var apiPath = ""
         
-        let apiPath = "https://api.microsofttranslator.com/V2/Http.svc/Translate?text=\(word)&from=en&to=es"
+        if language == "en" {
+            apiPath = "https://api.microsofttranslator.com/V2/Http.svc/Translate?text=\(word)&from=en&to=es"
+        } else {
+            apiPath = "https://api.microsofttranslator.com/V2/Http.svc/Translate?text=\(word)&from=es&to=en"
+        }
         let encodeString = apiPath.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         let url = URL(string: encodeString!)
         
@@ -93,6 +130,7 @@ class DashBoardViewController: UIViewController, XMLParserDelegate {
     }
     
     func parser(_ parser: XMLParser, foundCharacters string: String) {
+        stringBuilder = ""
         if(passData)
         {
             stringBuilder += string

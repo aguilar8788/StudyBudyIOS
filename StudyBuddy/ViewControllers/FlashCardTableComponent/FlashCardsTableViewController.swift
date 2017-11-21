@@ -23,47 +23,17 @@ class FlashCardsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let requestWords = Utils.returnDBFetchedObjects(entityName: "VocabWord")
-        
-        for word in requestWords {
-            if let learnedStatus = word.value(forKey: "learnedStatus") as? Int {
-                    if let untranslatedWord = word.value(forKey: "notTranslated") {
-                        if let translatedWord = word.value(forKey: "translated") {
-                            words.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus))
-                            if learnedStatus != 1 {
-                                wordsNotLearned.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus))
-                            } else if learnedStatus == 1 {
-                                wordsLearned.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus))
-                            }
-                            if let deck = word.value(forKey: "vocabDeck") as? String {
-                                if !decks.contains(deck) {
-                                    if !decks.contains("all words") {
-                                        if deck == "" {
-                                            decks.append("all words")
-                                        }
-                                    } else if deck != "" {
-                                        if !decks.contains(deck) {
-                                            decks.append(deck)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-            }
-        }
-        
-        if wordsLearned.count > 0 {
-            if !decks.contains("learned") {
-                decks.append("learned")
-            }
-        }
+        checkForDecks()
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        checkForDecks()
     }
     
     override func didReceiveMemoryWarning() {
@@ -118,6 +88,7 @@ class FlashCardsTableViewController: UITableViewController {
     
     
     @IBAction func studyCardsAction(_ sender: Any) {
+        print("is this where it is happening")
         if decks.count > 0 {
             if decks.count == 1 && decks[0] == "all words" {
                 performSegue(withIdentifier: "studySegue", sender: wordsNotLearned)
@@ -129,6 +100,44 @@ class FlashCardsTableViewController: UITableViewController {
                 performSegue(withIdentifier: "studySegue", sender: wordsNotLearned)
             } else {
                 //modal popup stating words have not been created yet
+            }
+        }
+    }
+    
+    func checkForDecks() {
+        let requestWords = Utils.returnDBFetchedObjects(entityName: "VocabWord")
+        
+        for word in requestWords {
+            if let learnedStatus = word.value(forKey: "learnedStatus") as? Int {
+                if let untranslatedWord = word.value(forKey: "notTranslated") {
+                    if let translatedWord = word.value(forKey: "translated") {
+                        words.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus))
+                        if learnedStatus != 1 {
+                            wordsNotLearned.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus))
+                        } else if learnedStatus == 1 {
+                            wordsLearned.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus))
+                        }
+                        if let deck = word.value(forKey: "vocabDeck") as? String {
+                            if !decks.contains(deck) {
+                                if !decks.contains("all words") {
+                                    if deck == "" {
+                                        decks.append("all words")
+                                    }
+                                } else if deck != "" {
+                                    if !decks.contains(deck) {
+                                        decks.append(deck)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        if wordsLearned.count > 0 {
+            if !decks.contains("learned") {
+                decks.append("learned")
             }
         }
     }
