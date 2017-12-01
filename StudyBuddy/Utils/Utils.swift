@@ -10,15 +10,37 @@ import Foundation
 import UIKit
 import CoreData
 
-class Utils: UIViewController {
-    func deleteUserFromDatabase(objToDelete: NSManagedObject) {
+class Utils {
+    static func deleteUserFromDatabase(entityName: String, predicate: String, predicateVal: String) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
         let context = appDelegate.persistentContainer.viewContext
+        
+        let req = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        
+        req.predicate = NSPredicate(format: predicate + " = %@", predicateVal)
+        req.returnsObjectsAsFaults = false
+        
         do {
-            context.delete(objToDelete)
-            try context.save()
-        } catch {
-            print("error: could not delete")
+            let results = try context.fetch(req)
+            print("fetched results \(results)")
+            if results.count > 0 {
+                for result in results as! [NSManagedObject]{
+                    if let objectFound = result.value(forKey: predicate) as? String {
+                        context.delete(result)
+                        //                            result.setValue("Rose", forKey: "userName")
+                        do {
+                            try context.save()
+                        } catch {
+                            print("didnt save")
+                        }
+                    }
+                }
+            }else {
+                print("No results")
+            }
+        }catch {
+            print("counldnt fetch")
         }
     }
     
@@ -41,9 +63,10 @@ class Utils: UIViewController {
     }
     
     // refactor. SHit is horrible
-    static func addWordToDataBase(word: String, translatedWord: String, context: NSManagedObjectContext) {
+    static func addWordToDataBase(word: String, translatedWord: String, context: NSManagedObjectContext) -> [String:String] {
+        var returnStatus = [String:String]()
         let newWord = NSEntityDescription.insertNewObject(forEntityName: "VocabWord", into: context)
-        
+  
         newWord.setValue(false, forKey: "learnedStatus")
         newWord.setValue(word, forKey: "notTranslated")
         newWord.setValue(translatedWord, forKey: "translated")
@@ -51,10 +74,12 @@ class Utils: UIViewController {
         
         do {
             try context.save()
-            print("word has been saved :)")
+            returnStatus = ["Success": "Card has been added"]
+        
         } catch {
-            print("error: word has not been saved")
+            returnStatus = ["Failed": "Card was not added"]
         }
+        return returnStatus
     }
     
     struct dataBaseFetchObj {

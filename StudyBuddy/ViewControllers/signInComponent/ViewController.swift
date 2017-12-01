@@ -61,7 +61,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         let userReq = Utils.returnDBFetchedObjects(entityName: "User")
         if userReq.count > 0 {
             if let user = userReq[0].value(forKey: "firstName") {
-                print("first \(user)")
                 performSegue(withIdentifier: "showDashBoard", sender: nil)
             }
         }

@@ -16,6 +16,7 @@ class StudyWordsViewController: UIViewController {
     
     var wordsToStudy = [FlashCardsTableViewController.wordsObject]()
     var wordsLearned = [FlashCardsTableViewController.wordsObject]()
+    var cardBackSide = false
     var counter = 0
     var counterBehindOne = 0
     
@@ -33,16 +34,18 @@ class StudyWordsViewController: UIViewController {
             secondInDeckFlashCardOutlet.text = wordsToStudy[counter + 1].translated
         }
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
-        tap.numberOfTapsRequired = 2
-        view.addGestureRecognizer(tap)
+//        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+//        doubleTap.numberOfTapsRequired = 2
+//        view.addGestureRecognizer(doubleTap)
+        
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(singleTapFlipCard))
+        singleTap.numberOfTapsRequired = 1
+        view.addGestureRecognizer(singleTap)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         self.view.sendSubview(toBack: self.moveBackInDeckOutlet)
-        //        self.moveBackInDeckOutlet.center.x -= self.view.bounds.width
-        
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -50,6 +53,25 @@ class StudyWordsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @objc
+    func singleTapFlipCard() {
+        secondInDeckFlashCardOutlet.isHidden = true
+        moveBackInDeckOutlet.isHidden = true
+        let options = UIViewAnimationOptions.transitionFlipFromLeft
+        UIView.transition(with: self.flashCardOutlet, duration: 0.3, options: options, animations: {
+            if !self.cardBackSide {
+                self.flashCardOutlet.text = self.wordsToStudy[self.counter].notTranslated
+                self.cardBackSide = true
+            } else if self.cardBackSide {
+                self.flashCardOutlet.text = self.wordsToStudy[self.counter].translated
+                self.cardBackSide = false
+            }
+        }, completion: { finished in
+            self.secondInDeckFlashCardOutlet.isHidden = false
+            self.moveBackInDeckOutlet.isHidden = false
+        })
+    }
+
     //must be refactored before production
     @objc
     func doubleTapped() {
@@ -67,18 +89,37 @@ class StudyWordsViewController: UIViewController {
             
             UIView.animate(withDuration: 1.0) {
                 self.flashCardOutlet.center.y -= self.view.bounds.width * 2
+                self.flashCardOutlet.isHidden = true
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
                 self.flashCardOutlet.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)
+                self.flashCardOutlet.isHidden = false
                 if self.wordsToStudy.count > 1 {
-                    if (self.counter) == self.wordsToStudy.count {
+                    if self.counter == self.wordsToStudy.count {
                         self.flashCardOutlet.text = self.wordsToStudy[self.counter - 1].translated
                         self.secondInDeckFlashCardOutlet.isHidden = true
                     } else {
-                        self.flashCardOutlet.text = self.wordsToStudy[self.counter].translated
+                        if self.counter != 0 && self.counter != self.wordsToStudy.count - 1 {
+                            self.counter = self.counter + 1
+                            self.flashCardOutlet.text = self.wordsToStudy[self.counter].translated
+                            self.secondInDeckFlashCardOutlet.text = self.wordsToStudy[self.counter + 1].translated
+                        } else {
+                            if self.counter != self.wordsToStudy.count - 1 {
+                                self.flashCardOutlet.text = self.wordsToStudy[self.counter].translated
+                                self.secondInDeckFlashCardOutlet.text = self.wordsToStudy[self.counter + 1].translated
+                            } else {
+                           
+                                    self.cardBackSide = false
+                                    self.flashCardOutlet.text = self.wordsToStudy[self.counter].translated
+                                    
+                                    self.moveBackInDeckOutlet.center.x -= self.view.bounds.width
+                                    self.view.sendSubview(toBack: self.moveBackInDeckOutlet)
+                            
+                            }
+                        }
                     }
                 } else {
-                    if (self.counter) == self.wordsToStudy.count {
+                    if self.counter == self.wordsToStudy.count {
                         self.secondInDeckFlashCardOutlet.isHidden = true
                         self.flashCardOutlet.text = self.wordsToStudy[self.counter - 1].translated
                     } else {
@@ -105,17 +146,14 @@ class StudyWordsViewController: UIViewController {
     
     @objc
     func wasDragged(gestureRec: UIPanGestureRecognizer) {
-        
-        let labelPoint = gestureRec.translation(in: view)
-        flashCardOutlet.center = CGPoint(x: view.bounds.width / 2 + labelPoint.x, y: view.bounds.height / 2 + labelPoint.y)
-        
-        let xFromCenter = view.bounds.width / 2 - flashCardOutlet.center.x
-        
-        if gestureRec.velocity(in: self.view).x > 0 {
+        cardBackSide = false
+
+ 
+        if gestureRec.velocity(in: self.view).x > 700 {
+            print("something")
             moveBackInDeckOutlet.isHidden = false
             secondInDeckFlashCardOutlet.isHidden = false
             
-            flashCardOutlet.center = CGPoint(x: view.bounds.width / 2, y: view.bounds.height / 2)
             if counter != 0 {
                 counter = counterBehindOne
                 
@@ -135,13 +173,20 @@ class StudyWordsViewController: UIViewController {
                 }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-                    
+                    self.cardBackSide = false
                     self.flashCardOutlet.text = self.wordsToStudy[self.counter].translated
                     
                     self.moveBackInDeckOutlet.center.x -= self.view.bounds.width
                     self.view.sendSubview(toBack: self.moveBackInDeckOutlet)
                 })
             }
+        }
+        
+        if gestureRec.velocity(in: self.view).x < 0 || gestureRec.velocity(in: self.view).y < -700{
+            let labelPoint = gestureRec.translation(in: view)
+            flashCardOutlet.center = CGPoint(x: view.bounds.width / 2 + labelPoint.x, y: view.bounds.height / 2 + labelPoint.y)
+            
+            let xFromCenter = view.bounds.width / 2 - flashCardOutlet.center.x
         }
         
         if counter == wordsToStudy.count - 1 {
@@ -169,6 +214,11 @@ class StudyWordsViewController: UIViewController {
                     flashCardOutlet.text = wordsToStudy[counter].translated
                 }
                 resetCardCenter()
+            }
+            
+            if flashCardOutlet.center.y < (view.bounds.width / 2 - 100) {
+                print("get out of here")
+                doubleTapped()
             }
             
             if gestureRec.velocity(in: self.view).y < (view.bounds.width / 2 - 100) || gestureRec.velocity(in: self.view).y > (view.bounds.width / 2 - 100) {

@@ -21,7 +21,7 @@ class DashBoardViewController: UIViewController, XMLParserDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -33,12 +33,11 @@ class DashBoardViewController: UIViewController, XMLParserDelegate {
         if wordToAddTextOutlet.text != "" {
             identifyLanguage(word: wordToAddTextOutlet.text!)
             //************ this needs to be changed to only notify if the add was actually successful ******************
-            let addedCardSuccessModal = Utils.modalPopUp(title: "Success", message: "Card Added", duration: 1)
-            self.present(addedCardSuccessModal, animated: true, completion: nil)
+            
             wordToAddTextOutlet.text = ""
         }
     }
-
+    
     
     /*
      // MARK: - Navigation
@@ -77,9 +76,7 @@ class DashBoardViewController: UIViewController, XMLParserDelegate {
     }
     
     func translateWord(word: String, language: String) {
-        print(word)
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
+        
         var apiPath = ""
         
         if language == "en" {
@@ -102,8 +99,26 @@ class DashBoardViewController: UIViewController, XMLParserDelegate {
                     self.parser.delegate = self
                     self.success = self.parser.parse()
                     if word != "" {
-                        Utils.addWordToDataBase(word: word, translatedWord: self.stringBuilder,  context: context)
-                        self.stringBuilder = ""
+                        DispatchQueue.main.async(execute: {
+                           
+                            let removeLanguageFromString = self.stringBuilder[self.stringBuilder.index(self.stringBuilder.startIndex, offsetBy: 2) ..< self.stringBuilder.index(self.stringBuilder.endIndex, offsetBy: 0)]
+                     
+                            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                            let context = appDelegate.persistentContainer.viewContext
+                            let addWordStatus = Utils.addWordToDataBase(word: word, translatedWord: String(removeLanguageFromString),  context: context)
+                                self.stringBuilder = ""
+                            for status in addWordStatus {
+                                print(status)
+                                if status.key == "Success" {
+                                    let addedCardSuccessModal = Utils.modalPopUp(title: status.key, message: status.value, duration: 1)
+                                    self.present(addedCardSuccessModal, animated: true, completion: nil)
+                                } else if status.key == "Error" {
+                                    let addedCardFailedModal = Utils.modalPopUp(title: status.key, message: status.value, duration: 1)
+                                    self.present(addedCardFailedModal, animated: true, completion: nil)
+                                }
+                            }
+                        })
+                      
                     }
                 }
             }
@@ -112,25 +127,24 @@ class DashBoardViewController: UIViewController, XMLParserDelegate {
     }
     
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
-        currentElement=elementName;
+        currentElement=elementName
         if(elementName=="string")
         {
-            passName=true;
-            passData=true;
+            passName=true
+            passData=true
         }
     }
     
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        currentElement="";
+        currentElement=""
         if(elementName=="string")
         {
-            passName=false;
-            passData=false;
+            passName=false
+            passData=false
         }
     }
     
     func parser(_ parser: XMLParser, foundCharacters string: String) {
-        stringBuilder = ""
         if(passData)
         {
             stringBuilder += string

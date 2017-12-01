@@ -22,9 +22,8 @@ class FlashCardsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         checkForDecks()
-        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -33,7 +32,9 @@ class FlashCardsTableViewController: UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        checkForDecks()
+
+            checkForDecks()
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -64,6 +65,8 @@ class FlashCardsTableViewController: UITableViewController {
         performSegue(withIdentifier: "translatedWordSegue", sender: translatedWord)
     }
     
+
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let wordViewController = segue.destination as? WordViewController {
             if let word = sender as? wordsObject {
@@ -72,23 +75,22 @@ class FlashCardsTableViewController: UITableViewController {
         }
         
         if let studySegue = segue.destination as? StudyWordsViewController {
+          
             if let words = sender as? [wordsObject] {
                 studySegue.wordsToStudy = words
             }
         }
         
-        
         if let userDecksSegue = segue.destination as? UserDecksTableViewController {
+          
             if let decks = sender as? [String] {
                 userDecksSegue.userDecks = decks
             }
         }
-        
     }
     
     
     @IBAction func studyCardsAction(_ sender: Any) {
-        print("is this where it is happening")
         if decks.count > 0 {
             if decks.count == 1 && decks[0] == "all words" {
                 performSegue(withIdentifier: "studySegue", sender: wordsNotLearned)
@@ -106,26 +108,32 @@ class FlashCardsTableViewController: UITableViewController {
     
     func checkForDecks() {
         let requestWords = Utils.returnDBFetchedObjects(entityName: "VocabWord")
-        
-        for word in requestWords {
-            if let learnedStatus = word.value(forKey: "learnedStatus") as? Int {
-                if let untranslatedWord = word.value(forKey: "notTranslated") {
-                    if let translatedWord = word.value(forKey: "translated") {
-                        words.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus))
-                        if learnedStatus != 1 {
-                            wordsNotLearned.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus))
-                        } else if learnedStatus == 1 {
-                            wordsLearned.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus))
-                        }
-                        if let deck = word.value(forKey: "vocabDeck") as? String {
-                            if !decks.contains(deck) {
-                                if !decks.contains("all words") {
-                                    if deck == "" {
-                                        decks.append("all words")
-                                    }
-                                } else if deck != "" {
-                                    if !decks.contains(deck) {
-                                        decks.append(deck)
+        print("words \(requestWords.count)")
+        print("words aquí \(words.count)")
+        if words.count != requestWords.count {
+            if words.count <= requestWords.count {
+            for word in requestWords {
+                if let learnedStatus = word.value(forKey: "learnedStatus") as? Int {
+                    if let untranslatedWord = word.value(forKey: "notTranslated") {
+                        if let translatedWord = word.value(forKey: "translated") as? String {
+                            
+                            words.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord, learnedStatus: learnedStatus))
+                            
+                            if learnedStatus != 1 {
+                                wordsNotLearned.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord, learnedStatus: learnedStatus))
+                            } else if learnedStatus == 1 {
+                                wordsLearned.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord, learnedStatus: learnedStatus))
+                            }
+                            if let deck = word.value(forKey: "vocabDeck") as? String {
+                                if !decks.contains(deck) {
+                                    if !decks.contains("all words") {
+                                        if deck == "" {
+                                            decks.append("all words")
+                                        }
+                                    } else if deck != "" {
+                                        if !decks.contains(deck) {
+                                            decks.append(deck)
+                                        }
                                     }
                                 }
                             }
@@ -133,6 +141,7 @@ class FlashCardsTableViewController: UITableViewController {
                     }
                 }
             }
+        }
         }
         
         if wordsLearned.count > 0 {
@@ -142,6 +151,18 @@ class FlashCardsTableViewController: UITableViewController {
         }
     }
     
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            print(words.count)
+//            //            Utils.deleteUserFromDatabase(entityName: "VocabWord", predicate: "translated", predicateVal: words[indexPath.row].translated)
+//            words.remove(at: indexPath.row)
+//            print(words.count)
+//            //            tableView.deleteRows(at: [indexPath], with: .fade)
+//
+//        }
+//        tableView.reloadData()
+//    }
+//
     /*
      // Override to support conditional editing of the table view.
      override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -150,17 +171,19 @@ class FlashCardsTableViewController: UITableViewController {
      }
      */
     
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+        
+            Utils.deleteUserFromDatabase(entityName: "VocabWord", predicate: "translated", predicateVal: words[indexPath.row].translated)
+            words.remove(at: indexPath.row)
+            tableView.reloadData()
+ 
+            //     tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+        
+    }
+    
     
     /*
      // Override to support rearranging the table view.
