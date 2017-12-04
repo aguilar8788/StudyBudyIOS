@@ -18,6 +18,7 @@ class FlashCardsTableViewController: UITableViewController {
         var notTranslated: String
         var translated: String
         var learnedStatus: Int
+        var deck: String
     }
     
     override func viewDidLoad() {
@@ -51,18 +52,19 @@ class FlashCardsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return words.count
+        return decks.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FlashCardCell", for: indexPath)
-        cell.textLabel?.text = words[indexPath.row].notTranslated
+
+        cell.textLabel?.text = decks[indexPath.row]
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let translatedWord = words[indexPath.row]
-        performSegue(withIdentifier: "translatedWordSegue", sender: translatedWord)
+        let translatedWord = decks[indexPath.row]
+        performSegue(withIdentifier: "userDecksSegue", sender: translatedWord)
     }
     
 
@@ -83,9 +85,9 @@ class FlashCardsTableViewController: UITableViewController {
         
         if let userDecksSegue = segue.destination as? UserDecksTableViewController {
           
-            if let decks = sender as? [String] {
-                userDecksSegue.userDecks = decks
-            }
+            
+                userDecksSegue.words = words
+            
         }
     }
     
@@ -108,21 +110,22 @@ class FlashCardsTableViewController: UITableViewController {
     
     func checkForDecks() {
         let requestWords = Utils.returnDBFetchedObjects(entityName: "VocabWord")
-        print("words \(requestWords.count)")
-        print("words aquí \(words.count)")
         if words.count != requestWords.count {
             if words.count <= requestWords.count {
             for word in requestWords {
                 if let learnedStatus = word.value(forKey: "learnedStatus") as? Int {
                     if let untranslatedWord = word.value(forKey: "notTranslated") {
                         if let translatedWord = word.value(forKey: "translated") as? String {
+                            if let deck = word.value(forKey: "vocabDeck") as? String {
+                                print("deck \(deck)")
                             
-                            words.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord, learnedStatus: learnedStatus))
+                            
+                            words.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord, learnedStatus: learnedStatus, deck: deck))
                             
                             if learnedStatus != 1 {
-                                wordsNotLearned.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord, learnedStatus: learnedStatus))
+                                wordsNotLearned.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord, learnedStatus: learnedStatus, deck: deck))
                             } else if learnedStatus == 1 {
-                                wordsLearned.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord, learnedStatus: learnedStatus))
+                                wordsLearned.append(wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord, learnedStatus: learnedStatus, deck: deck))
                             }
                             if let deck = word.value(forKey: "vocabDeck") as? String {
                                 if !decks.contains(deck) {
@@ -137,6 +140,7 @@ class FlashCardsTableViewController: UITableViewController {
                                     }
                                 }
                             }
+                        }
                         }
                     }
                 }

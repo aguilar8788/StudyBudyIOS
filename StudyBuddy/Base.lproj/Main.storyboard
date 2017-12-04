@@ -146,11 +146,15 @@
                     </view>
                     <navigationItem key="navigationItem" id="jnI-He-KIC">
                         <barButtonItem key="leftBarButtonItem" title="Settings" id="uq8-s6-H6D"/>
-                        <barButtonItem key="rightBarButtonItem" title="Words List" id="kGV-cs-b0b">
-                            <connections>
-                                <segue destination="vGT-Jm-PDY" kind="show" id="fkk-S7-3Gp"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Decks" id="kGV-cs-b0b">
+                                <connections>
+                                    <segue destination="vGT-Jm-PDY" kind="show" id="fkk-S7-3Gp"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Games" id="ixW-cG-9ox"/>
+                            <barButtonItem title="All Words" id="QlZ-is-KT0"/>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="wordToAddTextOutlet" destination="OP8-9M-uN9" id="6OH-7g-l6u"/>
@@ -184,14 +188,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="We6-qw-AX0">
-                        <rightBarButtonItems>
-                            <barButtonItem title="Race the Clock" id="cib-nt-Jvs"/>
-                            <barButtonItem title="Study Cards" id="V0R-PA-42p">
-                                <connections>
-                                    <action selector="studyCardsAction:" destination="vGT-Jm-PDY" id="law-gf-Ccy"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" title="Study Cards" id="V0R-PA-42p">
+                            <connections>
+                                <action selector="studyCardsAction:" destination="vGT-Jm-PDY" id="law-gf-Ccy"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <segue destination="fPL-Du-FUU" kind="show" identifier="translatedWordSegue" id="iWh-Ro-zVK"/>
@@ -357,6 +358,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="VFi-ZA-eps"/>
+        <segue reference="pNo-TH-I1B"/>
     </inferredMetricsTieBreakers>
 </document>

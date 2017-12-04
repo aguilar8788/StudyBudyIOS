@@ -10,11 +10,14 @@ import UIKit
 
 class UserDecksTableViewController: UITableViewController {
     var userDecks = [String]()
+     var words = [FlashCardsTableViewController.wordsObject]()
     var wordsInDeck = [FlashCardsTableViewController.wordsObject]()
     var wordsWithNoDeck = [FlashCardsTableViewController.wordsObject]()
+    var wordsToSend = [FlashCardsTableViewController.wordsObject]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("words \(words)")
         
         //        let requestWords = Utils.requestToDatabase(entityName: "VocabWord")
         //
@@ -69,10 +72,11 @@ class UserDecksTableViewController: UITableViewController {
                     if let untranslatedWord = word.value(forKey: "notTranslated") {
                         if let translatedWord = word.value(forKey: "translated") {
                             if let deck = word.value(forKey: "vocabDeck") as? String {
+                                
                                 if userDecks[indexPath.row] == deck {
-                                    wordsInDeck.append(FlashCardsTableViewController.wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus as! Int))
+                                    wordsInDeck.append(FlashCardsTableViewController.wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus as! Int, deck: deck))
                                 } else {
-                                    wordsWithNoDeck.append(FlashCardsTableViewController.wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus as! Int))
+                                    wordsWithNoDeck.append(FlashCardsTableViewController.wordsObject.init(notTranslated: untranslatedWord as! String, translated: translatedWord as! String, learnedStatus: learnedStatus as! Int, deck: deck))
                                 }
                             }
                         }
